@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Gestion des salariés</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/font-awesome.css">
+</head>
+<body>
+
+<div th:replace="fragments/header :: div"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Liste des salariés</h1>
+      <a href="/salaries/new" class="btn btn-primary">Nouveau salarié</a>
+      <table class="table table-hover table-striped" th:if="${salarieCount > 0}">
+        <thead>
+        <tr>
+          <th scope="col">ID
+            <a href="/salaries?page=0&size=10&sortProperty=id&sortDirection=DESC"><i class="fa fa-chevron-up"></i></a>
+          </th>
+          <th scope="col">Nom
+            <a href="/salaries?page=0&size=10&sortProperty=nom&sortDirection=DESC"><i class="fa fa-chevron-up"></i></a>
+          </th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${#numbers.sequence(beginPage, finishPage)}">
+          <th th:text="${salaries[i].id}" scope="row">1</th>
+          <td th:text="${salaries[i].nom}">Jeanne Dupond</td>
+          <td><a th:href="@{/salaries/{id}(id=${salaries[i].id})}" href="/salaries/1" class="btn btn-primary ember-view">Détail</a></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="row" th:if="${nbPage > 0}">
+        <div class="col-lg-6"><p>Affichage des salariés 1 à 10 sur un total de <span>11</span></p>
+        </div>
+        <div class="col-lg-6">
+          <ul class="pagination">
+            <li th:classappend="${page > 0} ? 'page-item' : 'page-item disabled' ">
+              <a th:href="@{/salaries?page={page}&amp;size={size}&amp;sortProperty=nom&amp;sortDirection=ASC(page=${page - 1},size=${size + 1})}" class="page-link" href="/salaries?page=-1&amp;size=10&amp;sortProperty=nom&amp;sortDirection=ASC">«</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(1,nbPage)}"><a th:text="${i}" th:href="@{/salaries?page={page}&amp;size={size}&amp;sortProperty=nom&amp;sortDirection=ASC(page=${i - 1},size=${size + 1})}" href="#" class="page-link"></a></li>
+            <li th:classappend="${page < nbPage} ? 'page-item' : 'page-item disabled' ">
+              <a th:href="@{/salaries?page={page}&amp;size={size}&amp;sortProperty=nom&amp;sortDirection=ASC(page=${page + 1},size=${size + 1})}" class="page-link" href="/salaries?page=1&amp;size=10&amp;sortProperty=nom&amp;sortDirection=ASC">»</a></li>
+          </ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></body></html>
